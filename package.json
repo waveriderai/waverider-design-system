@@ -7,8 +7,9 @@
   "files": [
     "tokens",
     "tailwind-preset.js",
-    "DESIGN.md",
-    "VARIANCE-BUDGET.md"
+    "scripts",
+    "VARIANCE-BUDGET.md",
+    "od"
   ],
   "main": "tailwind-preset.js",
   "exports": {
@@ -16,7 +17,6 @@
     "./tailwind-preset": "./tailwind-preset.js",
     "./tokens.css": "./tokens/index.css",
     "./tokens/core.css": "./tokens/core.css",
-    "./tokens/compat.css": "./tokens/compat.css",
     "./skins/*": "./tokens/skins/*"
   },
   "scripts": {
@@ -24,5 +24,10 @@
     "check:variance": "scripts/check-variance.sh",
     "check": "scripts/check-variance.sh && echo 'variance ok'"
   },
-  "keywords": ["design-system", "design-tokens", "waverider", "tailwind"]
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "waverider",
+    "tailwind"
+  ]
 }
