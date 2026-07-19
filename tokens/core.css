@@ -522,8 +522,16 @@
    Small set. These encode rules that are too easy to get wrong by hand.
    -------------------------------------------------------------------------- */
 
-/* Every trading numeral. Enforces mono + tabular figures together so columns
-   align and digits stop jittering on tick. */
+/* Tabular figures are the DEFAULT for every mono run, not an opt-in.
+   In this product mono is reserved for trading numerals, so proportional
+   figures are always wrong: without tnum the digits change width on each tick
+   and a price column visibly shakes.
+
+   Making this the default rather than a utility people must remember is
+   deliberate — auditing found 564 mono usages, and expecting every one of them
+   to also carry an opt-in class is a rule that will not hold. Correct by
+   construction beats correct by discipline. */
+.font-mono,
 .wr-num {
   font-family: var(--wr-font-mono);
   font-variant-numeric: var(--wr-numeric);
