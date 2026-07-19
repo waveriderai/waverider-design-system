@@ -6,6 +6,7 @@
 </style>
 <link rel="stylesheet" href="tokens/core.css">
 <link rel="stylesheet" href="tokens/skins/wavefinder.css">
+<link rel="stylesheet" href="tokens/skins/wavefinder-tw.css">
 <link rel="stylesheet" href="tokens/skins/a11y-deuteranopia.css">
 <style>
   * { box-sizing: border-box; }
@@ -82,6 +83,9 @@
   <button data-set="density" data-val="compact" aria-pressed="true">Compact</button>
   <button data-set="density" data-val="standard" aria-pressed="false">Standard</button>
   <button data-set="density" data-val="comfortable" aria-pressed="false">Comfortable</button>
+  <span class="lbl" style="margin-left:12px">Market</span>
+  <button data-set="convention" data-val="" aria-pressed="true">Western</button>
+  <button data-set="convention" data-val="east-asian" aria-pressed="false">&#26481;&#20124; (TW)</button>
   <span class="lbl" style="margin-left:12px">Vision</span>
   <button data-set="vision" data-val="" aria-pressed="true">Default</button>
   <button data-set="vision" data-val="deuteranopia" aria-pressed="false">Colorblind-safe</button>
@@ -107,6 +111,15 @@
   <div class="sw"><div class="chip" style="background:var(--wr-down-weak)"></div><div class="meta"><div class="name">▼ Down weak</div><div class="tok">--wr-down-weak</div></div></div>
   <div class="sw"><div class="chip" style="background:var(--wr-down-mid)"></div><div class="meta"><div class="name">▼ Down mid</div><div class="tok">--wr-down-mid</div></div></div>
   <div class="sw"><div class="chip" style="background:var(--wr-down-strong)"></div><div class="meta"><div class="name">▼ Down strong</div><div class="tok">--wr-down-strong</div></div></div>
+</div>
+
+<h2>Status — does <em>not</em> follow market convention</h2>
+<p class="note">Green means healthy in every market. Direction and status are separate token families precisely so flipping one never flips the other — a live-connection dot must not turn red because you switched to the Taiwan convention.</p>
+<div class="swatches">
+  <div class="sw"><div class="chip" style="background:var(--wr-success)"></div><div class="meta"><div class="name">Success / live</div><div class="tok">--wr-success</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-warning)"></div><div class="meta"><div class="name">Warning</div><div class="tok">--wr-warning</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-danger)"></div><div class="meta"><div class="name">Error</div><div class="tok">--wr-danger</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-info)"></div><div class="meta"><div class="name">Info</div><div class="tok">--wr-info</div></div></div>
 </div>
 
 <h2>Chart series</h2>
@@ -142,7 +155,10 @@
   <div class="card"><div class="k">Breadth</div><div class="v" style="color:var(--wr-up-strong)">+412</div></div>
   <div class="card"><div class="k">New highs</div><div class="v">187</div></div>
   <div class="card"><div class="k">Setups firing</div><div class="v" style="color:var(--wr-accent-text)">23</div></div>
-  <div class="card"><div class="k">Distribution days</div><div class="v" style="color:var(--wr-down-strong)">4</div></div>
+  <!-- Distribution days are a WARNING, not a price move. Using a directional
+       token here would make them flip color under the TW convention — the exact
+       overloading bug that must be untangled before flipping wavefinder-tw. -->
+  <div class="card"><div class="k">Distribution days</div><div class="v" style="color:var(--wr-warning)">4</div></div>
 </div>
 
 <script>

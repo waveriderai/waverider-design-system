@@ -11,21 +11,33 @@
                  that has no US equivalent
 
    ---------------------------------------------------------------------------
-   ⚠ OPEN QUESTION — DIRECTIONAL COLOR POLARITY. NEEDS A DECISION.
+   DIRECTIONAL COLOR: RED = UP.  Decided 2026-07-19.
 
-   In Taiwan (and CN/JP/KR) markets, RED means UP and GREEN means DOWN — the
-   inverse of the Western convention. The current TW app maps bull -> green and
-   bear -> red, i.e. it uses the US convention in a market where that reads
-   backwards to a local trader.
+   Taiwan (and CN/JP/KR) markets read RED as UP and GREEN as DOWN. The app
+   previously used the Western convention — an unexamined carry-over from the
+   US product, justified only by a 2026-05-28 comment reading "aligned with
+   global trading UIs." That rationale is backwards for a localized product:
+   the language, fonts, market data (三大法人, 張) and mechanics (漲停/跌停)
+   were all localized, but the single most-read visual signal was not.
 
-   This may be deliberate (your users may be bilingual/US-market oriented) or
-   it may be inherited by accident from the US token port. I have NOT changed
-   it — flipping directional color silently would be the single most dangerous
-   edit possible in a trading UI.
+   The clearest tell: 漲停 (limit up) — a mechanic that exists only in this
+   market — was flashing green, the color a local trader reads as "down."
 
-   To adopt local convention, uncomment the INVERTED block below. The token
-   names are already direction-based (up/down, not green/red) precisely so that
-   this is a value swap and touches zero components.
+   Decision was made while the app has effectively no user base, which is the
+   only time changing directional color is cheap. It is NOT set here, because
+   directional polarity is market locale, not app identity — see the
+   data-wr-convention mechanism in core.css. TW sets:
+
+     <html data-wr-app="wavefinder-tw" data-wr-convention="east-asian">
+
+   NOTE for the migration: in the current TW codebase, data-gain-*/data-loss-*
+   are OVERLOADED — they carry both price direction AND good/bad status.
+   LiveStatusBadge uses gain-5 for the connected dot; colorHelpers uses loss-5
+   for 過熱 (overheated, a RISING condition). Flipping values without first
+   splitting those apart turns the live indicator red and overheating green.
+   The core contract already separates them: --wr-up-*/--wr-down-* for
+   direction, --wr-success/--wr-danger for status. Status does NOT flip —
+   green still means healthy in every market.
    ---------------------------------------------------------------------------
    ========================================================================== */
 
@@ -45,19 +57,9 @@
   --wr-signature-limit-duration: 900ms;
 }
 
-/* --- INVERTED (local Taiwan convention) — currently OFF. ---------------------
-[data-wr-app="wavefinder-tw"] {
-  --wr-up-strong: #ef4444;
-  --wr-up-mid:    #f87171;
-  --wr-up-weak:   #fca5a5;
-  --wr-down-weak:   #86efac;
-  --wr-down-mid:    #4ade80;
-  --wr-down-strong: #22c55e;
-}
-[data-wr-app="wavefinder-tw"] .wr-delta[data-dir="up"]::before   { content: "▲"; }
-[data-wr-app="wavefinder-tw"] .wr-delta[data-dir="down"]::before { content: "▼"; }
---------------------------------------------------------------------------- */
-
+/* Limit up/down inherit the directional tokens, so they follow the market
+   convention automatically. Under data-wr-convention="east-asian", 漲停
+   flashes red and 跌停 flashes green — as a Taiwanese trader expects. */
 @keyframes wr-limit-up {
   0%, 100% { background-color: transparent; }
   50% { background-color: color-mix(in srgb, var(--wr-up-strong) 45%, transparent); }

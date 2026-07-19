@@ -299,6 +299,54 @@
 }
 
 /* -----------------------------------------------------------------------------
+   L1 — MARKET COLOR CONVENTION
+   In Taiwan, China, Japan and Korea, RED means UP and GREEN means DOWN — the
+   inverse of the Western convention.
+
+   This is a MARKET LOCALE concern, not app identity, so it is a first-class
+   core mechanism rather than a per-app skin override. Reasons:
+     - The same app may serve either market; a US-based user of the TW product
+       (or vice versa) needs their own convention, independent of which app.
+     - It sits alongside polarity and vision as an orthogonal axis.
+     - Routing it through an app skin would (rightly) fail the variance budget:
+       directional color is foundation, not one of an app's three knobs.
+
+   Set on <html>:  data-wr-convention="east-asian"
+   Default (unset) is Western: green up, red down.
+
+   The ▲/▼ glyphs from .wr-delta do NOT flip — they are convention-independent,
+   so a bilingual user switching between the US and TW products keeps one
+   channel that means the same thing in both. That is the whole point of
+   mandating the redundant glyph.
+   -------------------------------------------------------------------------- */
+
+[data-wr-convention="east-asian"] {
+  --wr-up-strong: #ef4444;
+  --wr-up-mid: #f87171;
+  --wr-up-weak: #fca5a5;
+  --wr-flat: #94a3b8;
+  --wr-down-weak: #86efac;
+  --wr-down-mid: #4ade80;
+  --wr-down-strong: #22c55e;
+
+  --wr-glow-up: 0 0 10px rgba(239, 68, 68, 0.3);
+  --wr-glow-down: 0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+[data-wr-polarity="light"][data-wr-convention="east-asian"] {
+  --wr-up-strong: #b91c1c;
+  --wr-up-mid: #dc2626;
+  --wr-up-weak: #f87171;
+  --wr-flat: #64748b;
+  --wr-down-weak: #4ade80;
+  --wr-down-mid: #16a34a;
+  --wr-down-strong: #15803d;
+
+  --wr-glow-up: 0 0 0 1px rgba(185, 28, 28, 0.3);
+  --wr-glow-down: 0 0 0 1px rgba(21, 128, 61, 0.3);
+}
+
+/* -----------------------------------------------------------------------------
    L1 — DENSITY
    A first-class token, because the variance budget lets apps differ on it.
    WaveFinder's scanner and WaveLogger's journal are the same design system at

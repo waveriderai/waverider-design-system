@@ -42,7 +42,20 @@ Everything else is attribute-driven at runtime:
 | `data-wr-app` | `wavefinder` · `wavefinder-tw` · `waverider-marketing` |
 | `data-wr-polarity` | `dark` (default) · `light` |
 | `data-wr-density` | `compact` · `standard` · `comfortable` |
+| `data-wr-convention` | unset = Western (green up) · `east-asian` (red up) |
 | `data-wr-vision` | unset · `deuteranopia` · `protanopia` · `tritanopia` |
+
+Precedence, lowest to highest: app skin → market convention → vision. A user's
+accessibility preference outranks everything, because a palette they cannot
+read is not a preference.
+
+### Direction vs status — keep them separate
+
+`--wr-up-*`/`--wr-down-*` mean *price direction* and flip with market convention.
+`--wr-success`/`--wr-danger` mean *health* and never flip — green means healthy
+in every market. Using a directional token for a status (a live-connection dot,
+a warning count) is the most common way this contract gets broken, and it only
+shows up when someone switches convention.
 
 ## Why CSS variables and not hex
 
@@ -100,7 +113,9 @@ silently drifts.
 | Enforcement scripts | ✅ built, run against real code |
 | WaveFinder skin | ✅ defined |
 | TW / marketing skins | ✅ defined |
+| Market convention (red-up) | ✅ built + verified; TW decision made 2026-07-19 |
 | AIChart · Trade Ideas · WaveLogger · TradeDesk skins | ⚠️ need accent decisions |
 | Adoption in `waverider-app` | ❌ not started — nothing consumes this yet |
+| `wavefinder-tw` convention flip | ❌ not started — needs the direction/status untangle first |
 | Pre-commit hooks installed | ❌ not started |
 | OD design system registered | ❌ not started |
