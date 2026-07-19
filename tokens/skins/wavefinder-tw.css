@@ -23,8 +23,9 @@
    The clearest tell: 漲停 (limit up) — a mechanic that exists only in this
    market — was flashing green, the color a local trader reads as "down."
 
-   Decision was made while the app has effectively no user base, which is the
-   only time changing directional color is cheap. It is NOT set here, because
+   Directional color is only cheap to change before traders build muscle memory
+   around it, so this was settled early and deliberately. It is NOT set here,
+   because
    directional polarity is market locale, not app identity — see the
    data-wr-convention mechanism in core.css. TW sets:
 
