@@ -30,12 +30,12 @@
 
      <html data-wr-app="wavefinder-tw" data-wr-convention="east-asian">
 
-   NOTE for the migration: in the current TW codebase, data-gain-*/data-loss-*
+   NOTE for the migration: in the current TW codebase, data-gain-* and data-loss-*
    are OVERLOADED — they carry both price direction AND good/bad status.
    LiveStatusBadge uses gain-5 for the connected dot; colorHelpers uses loss-5
    for 過熱 (overheated, a RISING condition). Flipping values without first
    splitting those apart turns the live indicator red and overheating green.
-   The core contract already separates them: --wr-up-*/--wr-down-* for
+   The core contract already separates them: --wr-up-* and --wr-down-* for
    direction, --wr-success/--wr-danger for status. Status does NOT flip —
    green still means healthy in every market.
    ---------------------------------------------------------------------------

@@ -111,34 +111,56 @@
      +1 step = "this element floats one notch above its parent."
      Never skip a step (void straight to elevated) — the hierarchy collapses
      and the UI reads as noise. */
-  --wr-surface-void: #05080d;      /* page backdrop, modal scrim */
-  --wr-surface-base: #0a0f1a;      /* app background */
-  --wr-surface-raised: #111827;    /* card, panel, sidebar */
-  --wr-surface-elevated: #1f2937;  /* dropdown, tooltip, active state */
-  --wr-surface-overlay: #374151;   /* hover highlight, selected row */
+  --wr-surface-void-rgb: 5 8 13;
+  --wr-surface-void: rgb(var(--wr-surface-void-rgb));      /* page backdrop, modal scrim */
+  --wr-surface-base-rgb: 10 15 26;
+  --wr-surface-base: rgb(var(--wr-surface-base-rgb));      /* app background */
+  --wr-surface-raised-rgb: 17 24 39;
+  --wr-surface-raised: rgb(var(--wr-surface-raised-rgb));    /* card, panel, sidebar */
+  --wr-surface-elevated-rgb: 31 41 55;
+  --wr-surface-elevated: rgb(var(--wr-surface-elevated-rgb));  /* dropdown, tooltip, active state */
+  --wr-surface-overlay-rgb: 55 65 81;
+  --wr-surface-overlay: rgb(var(--wr-surface-overlay-rgb));   /* hover highlight, selected row */
 
   /* --- Text ---------------------------------------------------------------- */
-  --wr-text-primary: #f1f5f9;      /* content and numerals */
-  --wr-text-secondary: #94a3b8;    /* labels, supporting copy */
-  --wr-text-muted: #64748b;        /* placeholder, disabled, helper */
-  --wr-text-inverse: #0f172a;      /* text on an accent fill */
+  --wr-text-primary-rgb: 241 245 249;
+  --wr-text-primary: rgb(var(--wr-text-primary-rgb));      /* content and numerals */
+  --wr-text-secondary-rgb: 148 163 184;
+  --wr-text-secondary: rgb(var(--wr-text-secondary-rgb));    /* labels, supporting copy */
+  --wr-text-muted-rgb: 100 116 139;
+  --wr-text-muted: rgb(var(--wr-text-muted-rgb));        /* placeholder, disabled, helper */
+  --wr-text-inverse-rgb: 15 23 42;
+  --wr-text-inverse: rgb(var(--wr-text-inverse-rgb));      /* text on an accent fill */
 
   /* --- Borders ------------------------------------------------------------- */
-  --wr-border-subtle: rgba(148, 163, 184, 0.1);
-  --wr-border-default: rgba(148, 163, 184, 0.2);
-  --wr-border-strong: rgba(148, 163, 184, 0.3);
+  --wr-border-subtle-rgb: 148 163 184;
+  --wr-border-subtle-a: 0.1;
+  --wr-border-subtle: rgb(var(--wr-border-subtle-rgb) / var(--wr-border-subtle-a));
+  --wr-border-default-rgb: 148 163 184;
+  --wr-border-default-a: 0.2;
+  --wr-border-default: rgb(var(--wr-border-default-rgb) / var(--wr-border-default-a));
+  --wr-border-strong-rgb: 148 163 184;
+  --wr-border-strong-a: 0.3;
+  --wr-border-strong: rgb(var(--wr-border-strong-rgb) / var(--wr-border-strong-a));
 
   /* --- Accent — THE per-app variance knob (see L2 skins) -------------------
      Default is WaveRider cyan: "technical precision". Used for calls to
      action and focus. Never decorative.
      --wr-accent-text is a separate token because a saturated accent that
      passes contrast as a FILL often fails as TEXT. Skins must set both. */
-  --wr-accent: #06b6d4;
-  --wr-accent-hover: #22d3ee;
-  --wr-accent-muted: #0891b2;
-  --wr-accent-text: #22d3ee;
-  --wr-accent-contrast: #05080d;   /* readable ON --wr-accent */
-  --wr-border-focus: rgba(6, 182, 212, 0.5);
+  --wr-accent-rgb: 6 182 212;
+  --wr-accent: rgb(var(--wr-accent-rgb));
+  --wr-accent-hover-rgb: 34 211 238;
+  --wr-accent-hover: rgb(var(--wr-accent-hover-rgb));
+  --wr-accent-muted-rgb: 8 145 178;
+  --wr-accent-muted: rgb(var(--wr-accent-muted-rgb));
+  --wr-accent-text-rgb: 34 211 238;
+  --wr-accent-text: rgb(var(--wr-accent-text-rgb));
+  --wr-accent-contrast-rgb: 5 8 13;
+  --wr-accent-contrast: rgb(var(--wr-accent-contrast-rgb));   /* readable ON --wr-accent */
+  --wr-border-focus-rgb: 6 182 212;
+  --wr-border-focus-a: 0.5;
+  --wr-border-focus: rgb(var(--wr-border-focus-rgb) / var(--wr-border-focus-a));
 
   /* --- Market data: directional semantics ----------------------------------
      Named up/down, NOT green/red — so a colorblind-safe or culturally
@@ -146,28 +168,44 @@
      HARD RULE: color is never the only channel. Every directional value
      ships a redundant sign glyph (see .wr-delta). ~8% of men cannot
      distinguish these hues, and this audience skews heavily male. */
-  --wr-up-strong: #22c55e;    /* >= 5% */
-  --wr-up-mid: #4ade80;       /* 2-5% */
-  --wr-up-weak: #86efac;      /* < 2% */
-  --wr-flat: #94a3b8;
-  --wr-down-weak: #fca5a5;
-  --wr-down-mid: #f87171;
-  --wr-down-strong: #ef4444;
+  --wr-up-strong-rgb: 34 197 94;
+  --wr-up-strong: rgb(var(--wr-up-strong-rgb));    /* >= 5% */
+  --wr-up-mid-rgb: 74 222 128;
+  --wr-up-mid: rgb(var(--wr-up-mid-rgb));       /* 2-5% */
+  --wr-up-weak-rgb: 134 239 172;
+  --wr-up-weak: rgb(var(--wr-up-weak-rgb));      /* < 2% */
+  --wr-flat-rgb: 148 163 184;
+  --wr-flat: rgb(var(--wr-flat-rgb));
+  --wr-down-weak-rgb: 252 165 165;
+  --wr-down-weak: rgb(var(--wr-down-weak-rgb));
+  --wr-down-mid-rgb: 248 113 113;
+  --wr-down-mid: rgb(var(--wr-down-mid-rgb));
+  --wr-down-strong-rgb: 239 68 68;
+  --wr-down-strong: rgb(var(--wr-down-strong-rgb));
 
   /* --- Volume -------------------------------------------------------------- */
-  --wr-volume-high: #3b82f6;
-  --wr-volume-surge: #8b5cf6;
+  --wr-volume-high-rgb: 59 130 246;
+  --wr-volume-high: rgb(var(--wr-volume-high-rgb));
+  --wr-volume-surge-rgb: 139 92 246;
+  --wr-volume-surge: rgb(var(--wr-volume-surge-rgb));
 
   /* --- Status -------------------------------------------------------------- */
-  --wr-success: #22c55e;
-  --wr-warning: #f59e0b;
-  --wr-danger: #ef4444;
-  --wr-info: #06b6d4;
+  --wr-success-rgb: 34 197 94;
+  --wr-success: rgb(var(--wr-success-rgb));
+  --wr-warning-rgb: 245 158 11;
+  --wr-warning: rgb(var(--wr-warning-rgb));
+  --wr-danger-rgb: 239 68 68;
+  --wr-danger: rgb(var(--wr-danger-rgb));
+  --wr-info-rgb: 6 182 212;
+  --wr-info: rgb(var(--wr-info-rgb));
 
   /* --- Tier / merchandising ------------------------------------------------ */
-  --wr-tier-rider: #f59e0b;
-  --wr-tier-pro: #10b981;
-  --wr-tier-advanced: #8b5cf6;
+  --wr-tier-rider-rgb: 245 158 11;
+  --wr-tier-rider: rgb(var(--wr-tier-rider-rgb));
+  --wr-tier-pro-rgb: 16 185 129;
+  --wr-tier-pro: rgb(var(--wr-tier-pro-rgb));
+  --wr-tier-advanced-rgb: 139 92 246;
+  --wr-tier-advanced: rgb(var(--wr-tier-advanced-rgb));
 
   /* --- Charts --------------------------------------------------------------
      A categorical series palette the family shares. Previously MISSING, which
@@ -175,19 +213,36 @@
      family that doesn't look related.
      Chosen to be distinguishable under deuteranopia AND to avoid colliding
      with up/down semantics: no pure green or red in the series ramp. */
-  --wr-chart-1: #22d3ee;
-  --wr-chart-2: #a78bfa;
-  --wr-chart-3: #fbbf24;
-  --wr-chart-4: #60a5fa;
-  --wr-chart-5: #f472b6;
-  --wr-chart-6: #2dd4bf;
-  --wr-chart-7: #fb923c;
-  --wr-chart-8: #94a3b8;
+  --wr-chart-1-rgb: 34 211 238;
+  --wr-chart-1: rgb(var(--wr-chart-1-rgb));
+  --wr-chart-2-rgb: 167 139 250;
+  --wr-chart-2: rgb(var(--wr-chart-2-rgb));
+  --wr-chart-3-rgb: 251 191 36;
+  --wr-chart-3: rgb(var(--wr-chart-3-rgb));
+  --wr-chart-4-rgb: 96 165 250;
+  --wr-chart-4: rgb(var(--wr-chart-4-rgb));
+  --wr-chart-5-rgb: 244 114 182;
+  --wr-chart-5: rgb(var(--wr-chart-5-rgb));
+  --wr-chart-6-rgb: 45 212 191;
+  --wr-chart-6: rgb(var(--wr-chart-6-rgb));
+  --wr-chart-7-rgb: 251 146 60;
+  --wr-chart-7: rgb(var(--wr-chart-7-rgb));
+  --wr-chart-8-rgb: 148 163 184;
+  --wr-chart-8: rgb(var(--wr-chart-8-rgb));
 
-  --wr-chart-grid: rgba(148, 163, 184, 0.12);
-  --wr-chart-axis: #64748b;
-  --wr-chart-crosshair: rgba(6, 182, 212, 0.6);
-  --wr-chart-band: rgba(148, 163, 184, 0.06);
+  --wr-chart-grid-rgb: 148 163 184;
+
+  --wr-chart-grid-a: 0.12;
+
+  --wr-chart-grid: rgb(var(--wr-chart-grid-rgb) / var(--wr-chart-grid-a));
+  --wr-chart-axis-rgb: 100 116 139;
+  --wr-chart-axis: rgb(var(--wr-chart-axis-rgb));
+  --wr-chart-crosshair-rgb: 6 182 212;
+  --wr-chart-crosshair-a: 0.6;
+  --wr-chart-crosshair: rgb(var(--wr-chart-crosshair-rgb) / var(--wr-chart-crosshair-a));
+  --wr-chart-band-rgb: 148 163 184;
+  --wr-chart-band-a: 0.06;
+  --wr-chart-band: rgb(var(--wr-chart-band-rgb) / var(--wr-chart-band-a));
 
   /* --- Elevation ----------------------------------------------------------
      WaveRider does not use light-source drop shadows. Shadow means GLOW, and
@@ -221,65 +276,127 @@
      to the same white is the classic light-mode mistake: a dropdown opening
      over a card then shows no elevation change at all. Raised sits a hair off
      white so elevated has somewhere to go. */
-  --wr-surface-void: #dde3ec;
-  --wr-surface-base: #eef1f6;
-  --wr-surface-raised: #f8fafc;
-  --wr-surface-elevated: #ffffff;
-  --wr-surface-overlay: #e7ecf3;
+  --wr-surface-void-rgb: 221 227 236;
+  --wr-surface-void: rgb(var(--wr-surface-void-rgb));
+  --wr-surface-base-rgb: 238 241 246;
+  --wr-surface-base: rgb(var(--wr-surface-base-rgb));
+  --wr-surface-raised-rgb: 248 250 252;
+  --wr-surface-raised: rgb(var(--wr-surface-raised-rgb));
+  --wr-surface-elevated-rgb: 255 255 255;
+  --wr-surface-elevated: rgb(var(--wr-surface-elevated-rgb));
+  --wr-surface-overlay-rgb: 231 236 243;
+  --wr-surface-overlay: rgb(var(--wr-surface-overlay-rgb));
 
-  --wr-text-primary: #0b1220;
-  --wr-text-secondary: #475569;
-  --wr-text-muted: #64748b;
-  --wr-text-inverse: #f8fafc;
+  --wr-text-primary-rgb: 11 18 32;
 
-  --wr-border-subtle: rgba(15, 23, 42, 0.08);
-  --wr-border-default: rgba(15, 23, 42, 0.14);
-  --wr-border-strong: rgba(15, 23, 42, 0.24);
+  --wr-text-primary: rgb(var(--wr-text-primary-rgb));
+  --wr-text-secondary-rgb: 71 85 105;
+  --wr-text-secondary: rgb(var(--wr-text-secondary-rgb));
+  --wr-text-muted-rgb: 100 116 139;
+  --wr-text-muted: rgb(var(--wr-text-muted-rgb));
+  --wr-text-inverse-rgb: 248 250 252;
+  --wr-text-inverse: rgb(var(--wr-text-inverse-rgb));
+
+  --wr-border-subtle-rgb: 15 23 42;
+
+  --wr-border-subtle-a: 0.08;
+
+  --wr-border-subtle: rgb(var(--wr-border-subtle-rgb) / var(--wr-border-subtle-a));
+  --wr-border-default-rgb: 15 23 42;
+  --wr-border-default-a: 0.14;
+  --wr-border-default: rgb(var(--wr-border-default-rgb) / var(--wr-border-default-a));
+  --wr-border-strong-rgb: 15 23 42;
+  --wr-border-strong-a: 0.24;
+  --wr-border-strong: rgb(var(--wr-border-strong-rgb) / var(--wr-border-strong-a));
 
   /* Cyan #06B6D4 as TEXT on white is ~2.3:1 — fails badly. Darkened for text
      while the fill stays on-brand. */
-  --wr-accent: #0891b2;
-  --wr-accent-hover: #06b6d4;
-  --wr-accent-muted: #67e8f9;
-  --wr-accent-text: #0e7490;
-  --wr-accent-contrast: #ffffff;
-  --wr-border-focus: rgba(8, 145, 178, 0.55);
+  --wr-accent-rgb: 8 145 178;
+  --wr-accent: rgb(var(--wr-accent-rgb));
+  --wr-accent-hover-rgb: 6 182 212;
+  --wr-accent-hover: rgb(var(--wr-accent-hover-rgb));
+  --wr-accent-muted-rgb: 103 232 249;
+  --wr-accent-muted: rgb(var(--wr-accent-muted-rgb));
+  --wr-accent-text-rgb: 14 116 144;
+  --wr-accent-text: rgb(var(--wr-accent-text-rgb));
+  --wr-accent-contrast-rgb: 255 255 255;
+  --wr-accent-contrast: rgb(var(--wr-accent-contrast-rgb));
+  --wr-border-focus-rgb: 8 145 178;
+  --wr-border-focus-a: 0.55;
+  --wr-border-focus: rgb(var(--wr-border-focus-rgb) / var(--wr-border-focus-a));
 
   /* Directional values darkened so they pass contrast on white. The bright
      dark-mode greens (#86EFAC) are invisible on a light surface. */
-  --wr-up-strong: #15803d;
-  --wr-up-mid: #16a34a;
-  --wr-up-weak: #4ade80;
-  --wr-flat: #64748b;
-  --wr-down-weak: #f87171;
-  --wr-down-mid: #dc2626;
-  --wr-down-strong: #b91c1c;
+  --wr-up-strong-rgb: 21 128 61;
+  --wr-up-strong: rgb(var(--wr-up-strong-rgb));
+  --wr-up-mid-rgb: 22 163 74;
+  --wr-up-mid: rgb(var(--wr-up-mid-rgb));
+  --wr-up-weak-rgb: 74 222 128;
+  --wr-up-weak: rgb(var(--wr-up-weak-rgb));
+  --wr-flat-rgb: 100 116 139;
+  --wr-flat: rgb(var(--wr-flat-rgb));
+  --wr-down-weak-rgb: 248 113 113;
+  --wr-down-weak: rgb(var(--wr-down-weak-rgb));
+  --wr-down-mid-rgb: 220 38 38;
+  --wr-down-mid: rgb(var(--wr-down-mid-rgb));
+  --wr-down-strong-rgb: 185 28 28;
+  --wr-down-strong: rgb(var(--wr-down-strong-rgb));
 
-  --wr-volume-high: #2563eb;
-  --wr-volume-surge: #7c3aed;
+  --wr-volume-high-rgb: 37 99 235;
 
-  --wr-success: #15803d;
-  --wr-warning: #b45309;
-  --wr-danger: #b91c1c;
-  --wr-info: #0e7490;
+  --wr-volume-high: rgb(var(--wr-volume-high-rgb));
+  --wr-volume-surge-rgb: 124 58 237;
+  --wr-volume-surge: rgb(var(--wr-volume-surge-rgb));
 
-  --wr-tier-rider: #b45309;
-  --wr-tier-pro: #047857;
-  --wr-tier-advanced: #6d28d9;
+  --wr-success-rgb: 21 128 61;
 
-  --wr-chart-1: #0891b2;
-  --wr-chart-2: #7c3aed;
-  --wr-chart-3: #b45309;
-  --wr-chart-4: #2563eb;
-  --wr-chart-5: #be185d;
-  --wr-chart-6: #0d9488;
-  --wr-chart-7: #c2410c;
-  --wr-chart-8: #64748b;
+  --wr-success: rgb(var(--wr-success-rgb));
+  --wr-warning-rgb: 180 83 9;
+  --wr-warning: rgb(var(--wr-warning-rgb));
+  --wr-danger-rgb: 185 28 28;
+  --wr-danger: rgb(var(--wr-danger-rgb));
+  --wr-info-rgb: 14 116 144;
+  --wr-info: rgb(var(--wr-info-rgb));
 
-  --wr-chart-grid: rgba(15, 23, 42, 0.1);
-  --wr-chart-axis: #64748b;
-  --wr-chart-crosshair: rgba(8, 145, 178, 0.6);
-  --wr-chart-band: rgba(15, 23, 42, 0.04);
+  --wr-tier-rider-rgb: 180 83 9;
+
+  --wr-tier-rider: rgb(var(--wr-tier-rider-rgb));
+  --wr-tier-pro-rgb: 4 120 87;
+  --wr-tier-pro: rgb(var(--wr-tier-pro-rgb));
+  --wr-tier-advanced-rgb: 109 40 217;
+  --wr-tier-advanced: rgb(var(--wr-tier-advanced-rgb));
+
+  --wr-chart-1-rgb: 8 145 178;
+
+  --wr-chart-1: rgb(var(--wr-chart-1-rgb));
+  --wr-chart-2-rgb: 124 58 237;
+  --wr-chart-2: rgb(var(--wr-chart-2-rgb));
+  --wr-chart-3-rgb: 180 83 9;
+  --wr-chart-3: rgb(var(--wr-chart-3-rgb));
+  --wr-chart-4-rgb: 37 99 235;
+  --wr-chart-4: rgb(var(--wr-chart-4-rgb));
+  --wr-chart-5-rgb: 190 24 93;
+  --wr-chart-5: rgb(var(--wr-chart-5-rgb));
+  --wr-chart-6-rgb: 13 148 136;
+  --wr-chart-6: rgb(var(--wr-chart-6-rgb));
+  --wr-chart-7-rgb: 194 65 12;
+  --wr-chart-7: rgb(var(--wr-chart-7-rgb));
+  --wr-chart-8-rgb: 100 116 139;
+  --wr-chart-8: rgb(var(--wr-chart-8-rgb));
+
+  --wr-chart-grid-rgb: 15 23 42;
+
+  --wr-chart-grid-a: 0.1;
+
+  --wr-chart-grid: rgb(var(--wr-chart-grid-rgb) / var(--wr-chart-grid-a));
+  --wr-chart-axis-rgb: 100 116 139;
+  --wr-chart-axis: rgb(var(--wr-chart-axis-rgb));
+  --wr-chart-crosshair-rgb: 8 145 178;
+  --wr-chart-crosshair-a: 0.6;
+  --wr-chart-crosshair: rgb(var(--wr-chart-crosshair-rgb) / var(--wr-chart-crosshair-a));
+  --wr-chart-band-rgb: 15 23 42;
+  --wr-chart-band-a: 0.04;
+  --wr-chart-band: rgb(var(--wr-chart-band-rgb) / var(--wr-chart-band-a));
 
   /* On light surfaces, elevation reverts to conventional shadow — glow is
      invisible on white. This is the one place the family's "glow not shadow"
@@ -321,26 +438,40 @@
    -------------------------------------------------------------------------- */
 
 [data-wr-convention="east-asian"] {
-  --wr-up-strong: #ef4444;
-  --wr-up-mid: #f87171;
-  --wr-up-weak: #fca5a5;
-  --wr-flat: #94a3b8;
-  --wr-down-weak: #86efac;
-  --wr-down-mid: #4ade80;
-  --wr-down-strong: #22c55e;
+  --wr-up-strong-rgb: 239 68 68;
+  --wr-up-strong: rgb(var(--wr-up-strong-rgb));
+  --wr-up-mid-rgb: 248 113 113;
+  --wr-up-mid: rgb(var(--wr-up-mid-rgb));
+  --wr-up-weak-rgb: 252 165 165;
+  --wr-up-weak: rgb(var(--wr-up-weak-rgb));
+  --wr-flat-rgb: 148 163 184;
+  --wr-flat: rgb(var(--wr-flat-rgb));
+  --wr-down-weak-rgb: 134 239 172;
+  --wr-down-weak: rgb(var(--wr-down-weak-rgb));
+  --wr-down-mid-rgb: 74 222 128;
+  --wr-down-mid: rgb(var(--wr-down-mid-rgb));
+  --wr-down-strong-rgb: 34 197 94;
+  --wr-down-strong: rgb(var(--wr-down-strong-rgb));
 
   --wr-glow-up: 0 0 10px rgba(239, 68, 68, 0.3);
   --wr-glow-down: 0 0 10px rgba(34, 197, 94, 0.3);
 }
 
 [data-wr-polarity="light"][data-wr-convention="east-asian"] {
-  --wr-up-strong: #b91c1c;
-  --wr-up-mid: #dc2626;
-  --wr-up-weak: #f87171;
-  --wr-flat: #64748b;
-  --wr-down-weak: #4ade80;
-  --wr-down-mid: #16a34a;
-  --wr-down-strong: #15803d;
+  --wr-up-strong-rgb: 185 28 28;
+  --wr-up-strong: rgb(var(--wr-up-strong-rgb));
+  --wr-up-mid-rgb: 220 38 38;
+  --wr-up-mid: rgb(var(--wr-up-mid-rgb));
+  --wr-up-weak-rgb: 248 113 113;
+  --wr-up-weak: rgb(var(--wr-up-weak-rgb));
+  --wr-flat-rgb: 100 116 139;
+  --wr-flat: rgb(var(--wr-flat-rgb));
+  --wr-down-weak-rgb: 74 222 128;
+  --wr-down-weak: rgb(var(--wr-down-weak-rgb));
+  --wr-down-mid-rgb: 22 163 74;
+  --wr-down-mid: rgb(var(--wr-down-mid-rgb));
+  --wr-down-strong-rgb: 21 128 61;
+  --wr-down-strong: rgb(var(--wr-down-strong-rgb));
 
   --wr-glow-up: 0 0 0 1px rgba(185, 28, 28, 0.3);
   --wr-glow-down: 0 0 0 1px rgba(21, 128, 61, 0.3);

@@ -20,6 +20,34 @@
    the role-based names (bg-surface-raised, text-primary, text-up-strong).
    ========================================================================== */
 
+/* Colors are stored as RGB CHANNEL TRIPLETS (--wr-x-rgb: 6 182 212) rather than
+   hex, because Tailwind cannot apply an opacity modifier to a var() holding a
+   full color. waverider-app uses 1488 such modifiers (bg-brand/20,
+   border-brand/30, ...), so this is required, not stylistic.
+
+   c()  solid token      -> rgb(var(--x-rgb))            , modifier replaces alpha
+   ca() token with a default alpha (borders, chart grid)
+        -> rgb(var(--x-rgb) / var(--x-a))                , modifier replaces alpha
+
+   Alpha REPLACEMENT (not multiplication) matches Tailwind's built-in behaviour
+   for rgba() theme values, so the previous inline config's semantics are
+   preserved exactly. Verified by scripts/verify-ds-equivalence.mjs. */
+const c = (v) => ({ opacityValue }) =>
+  opacityValue === undefined ? `rgb(var(${v}-rgb))` : `rgb(var(${v}-rgb) / ${opacityValue})`;
+
+/* NOTE on the var(--tw-) check: for bg/text/border utilities Tailwind does not
+   pass `undefined` when there is no opacity modifier — it passes its own
+   `var(--tw-bg-opacity)` (etc), which defaults to 1. Checking only for
+   `undefined` therefore silently DROPS the token's default alpha, turning
+   e.g. text-border-default from 20% opaque to fully opaque. That is a real
+   regression (21 such usages in waverider-app) and it is invisible until
+   someone looks at the pixels. An explicit modifier still arrives as a bare
+   number, so the two cases stay distinguishable. */
+const ca = (v) => ({ opacityValue }) =>
+  opacityValue === undefined || String(opacityValue).startsWith("var(--tw-")
+    ? `rgb(var(${v}-rgb) / var(${v}-a))`
+    : `rgb(var(${v}-rgb) / ${opacityValue})`;
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class", '[data-wr-polarity="dark"]'],
@@ -29,106 +57,129 @@ module.exports = {
       colors: {
         /* --- Preferred role-based vocabulary (use these in new code) ------ */
         surface: {
-          void: "var(--wr-surface-void)",
-          base: "var(--wr-surface-base)",
-          raised: "var(--wr-surface-raised)",
-          elevated: "var(--wr-surface-elevated)",
-          overlay: "var(--wr-surface-overlay)",
+          void: c("--wr-surface-void"),
+          base: c("--wr-surface-base"),
+          raised: c("--wr-surface-raised"),
+          elevated: c("--wr-surface-elevated"),
+          overlay: c("--wr-surface-overlay"),
         },
         content: {
-          primary: "var(--wr-text-primary)",
-          secondary: "var(--wr-text-secondary)",
-          muted: "var(--wr-text-muted)",
-          inverse: "var(--wr-text-inverse)",
+          primary: c("--wr-text-primary"),
+          secondary: c("--wr-text-secondary"),
+          muted: c("--wr-text-muted"),
+          inverse: c("--wr-text-inverse"),
         },
         up: {
-          strong: "var(--wr-up-strong)",
-          mid: "var(--wr-up-mid)",
-          weak: "var(--wr-up-weak)",
+          strong: c("--wr-up-strong"),
+          mid: c("--wr-up-mid"),
+          weak: c("--wr-up-weak"),
         },
         down: {
-          weak: "var(--wr-down-weak)",
-          mid: "var(--wr-down-mid)",
-          strong: "var(--wr-down-strong)",
+          weak: c("--wr-down-weak"),
+          mid: c("--wr-down-mid"),
+          strong: c("--wr-down-strong"),
         },
-        flat: "var(--wr-flat)",
+        flat: c("--wr-flat"),
         chart: {
-          1: "var(--wr-chart-1)",
-          2: "var(--wr-chart-2)",
-          3: "var(--wr-chart-3)",
-          4: "var(--wr-chart-4)",
-          5: "var(--wr-chart-5)",
-          6: "var(--wr-chart-6)",
-          7: "var(--wr-chart-7)",
-          8: "var(--wr-chart-8)",
-          grid: "var(--wr-chart-grid)",
-          axis: "var(--wr-chart-axis)",
-          crosshair: "var(--wr-chart-crosshair)",
-          band: "var(--wr-chart-band)",
+          1: c("--wr-chart-1"),
+          2: c("--wr-chart-2"),
+          3: c("--wr-chart-3"),
+          4: c("--wr-chart-4"),
+          5: c("--wr-chart-5"),
+          6: c("--wr-chart-6"),
+          7: c("--wr-chart-7"),
+          8: c("--wr-chart-8"),
+          grid: ca("--wr-chart-grid"),
+          axis: c("--wr-chart-axis"),
+          crosshair: ca("--wr-chart-crosshair"),
+          band: ca("--wr-chart-band"),
         },
         tier: {
-          rider: "var(--wr-tier-rider)",
-          pro: "var(--wr-tier-pro)",
-          advanced: "var(--wr-tier-advanced)",
+          rider: c("--wr-tier-rider"),
+          pro: c("--wr-tier-pro"),
+          advanced: c("--wr-tier-advanced"),
         },
 
         /* --- Established vocabulary (kept so no component needs editing) -- */
-        "bg-void": "var(--wr-surface-void)",
-        "bg-base": "var(--wr-surface-base)",
-        "bg-surface": "var(--wr-surface-raised)",
-        "bg-elevated": "var(--wr-surface-elevated)",
-        "bg-overlay": "var(--wr-surface-overlay)",
+        "bg-void": c("--wr-surface-void"),
+        "bg-base": c("--wr-surface-base"),
+        "bg-surface": c("--wr-surface-raised"),
+        "bg-elevated": c("--wr-surface-elevated"),
+        "bg-overlay": c("--wr-surface-overlay"),
 
         brand: {
-          DEFAULT: "var(--wr-accent)",
-          glow: "var(--wr-accent-hover)",
-          hover: "var(--wr-accent-hover)",
-          muted: "var(--wr-accent-muted)",
-          text: "var(--wr-accent-text)",
-          contrast: "var(--wr-accent-contrast)",
+          DEFAULT: c("--wr-accent"),
+          glow: c("--wr-accent-hover"),
+          hover: c("--wr-accent-hover"),
+          muted: c("--wr-accent-muted"),
+          text: c("--wr-accent-text"),
+          contrast: c("--wr-accent-contrast"),
         },
 
         accent: {
-          gold: "var(--wr-tier-rider)",
-          emerald: "var(--wr-tier-pro)",
-          violet: "var(--wr-tier-advanced)",
+          gold: c("--wr-tier-rider"),
+          emerald: c("--wr-tier-pro"),
+          violet: c("--wr-tier-advanced"),
         },
 
         data: {
-          "gain-5": "var(--wr-up-strong)",
-          "gain-3": "var(--wr-up-mid)",
-          "gain-1": "var(--wr-up-weak)",
-          neutral: "var(--wr-flat)",
-          "loss-1": "var(--wr-down-weak)",
-          "loss-3": "var(--wr-down-mid)",
-          "loss-5": "var(--wr-down-strong)",
+          "gain-5": c("--wr-up-strong"),
+          "gain-3": c("--wr-up-mid"),
+          "gain-1": c("--wr-up-weak"),
+          neutral: c("--wr-flat"),
+          "loss-1": c("--wr-down-weak"),
+          "loss-3": c("--wr-down-mid"),
+          "loss-5": c("--wr-down-strong"),
+
+          /* ---- DEPRECATED — chromatically named, 171 uses in waverider-app --
+             These name a COLOR ("green") rather than a MEANING ("up"), which is
+             the exact thing this contract exists to stop. They are kept only so
+             adoption needs no component edits.
+
+             ⚠ They map to directional tokens, so they WILL flip under
+             data-wr-convention="east-asian". If a `data-green-5` is being used
+             for a status (a live dot, a "healthy" badge) rather than a price
+             move, it must move to `success` / `warning` / `danger` BEFORE that
+             app ever enables a market convention. That mistake already exists
+             in wavefinder-tw.
+
+             Migration: data-green-5 → data-gain-5 (or `up-strong`), etc. */
+          "green-5": c("--wr-up-strong"),
+          "green-4": c("--wr-up-mid"),
+          "green-3": c("--wr-up-weak"),
+          cyan: c("--wr-accent"),
+          yellow: c("--wr-warning"),
+          red: c("--wr-down-strong"),
         },
 
         volume: {
-          high: "var(--wr-volume-high)",
-          surge: "var(--wr-volume-surge)",
+          high: c("--wr-volume-high"),
+          surge: c("--wr-volume-surge"),
         },
 
-        "text-primary": "var(--wr-text-primary)",
-        "text-secondary": "var(--wr-text-secondary)",
-        "text-muted": "var(--wr-text-muted)",
-        "text-inverse": "var(--wr-text-inverse)",
+        "text-primary": c("--wr-text-primary"),
+        "text-secondary": c("--wr-text-secondary"),
+        "text-muted": c("--wr-text-muted"),
+        "text-inverse": c("--wr-text-inverse"),
 
-        "border-subtle": "var(--wr-border-subtle)",
-        "border-default": "var(--wr-border-default)",
-        "border-strong": "var(--wr-border-strong)",
-        "border-glow": "var(--wr-border-focus)",
+        "border-subtle": ca("--wr-border-subtle"),
+        "border-default": ca("--wr-border-default"),
+        "border-strong": ca("--wr-border-strong"),
+        "border-glow": ca("--wr-border-focus"),
 
-        success: "var(--wr-success)",
-        warning: "var(--wr-warning)",
-        error: "var(--wr-danger)",
-        info: "var(--wr-info)",
+        success: c("--wr-success"),
+        warning: c("--wr-warning"),
+        error: c("--wr-danger"),
+        info: c("--wr-info"),
       },
 
       fontFamily: {
         display: "var(--wr-font-display)",
         body: "var(--wr-font-body)",
         mono: "var(--wr-font-mono)",
+        /* DEPRECATED alias. Without it, `font-sans` silently falls back to
+           Tailwind's default stack instead of Jakarta — a real regression. */
+        sans: "var(--wr-font-body)",
       },
 
       fontSize: {

@@ -14,10 +14,15 @@
    but any embedded PRODUCT UI (screenshots, live demos, the app shell) renders
    under the product tokens unchanged. A product screenshot on the marketing
    site must look identical to the product.
-
-   /* @wr-variance-exempt --wr-display-xl marketing headlines carry further than terminal type; product routes on this domain must not inherit this */
-   /* @wr-variance-exempt --wr-display-lg same as display-xl */
    ========================================================================== */
+
+/* CSS has no nested comments, so these annotations MUST stay top-level.
+   Putting them inside the block above ends it at the first inner comment
+   terminator and spills the remainder into the stylesheet as garbage.
+   (Note this sentence avoids writing that terminator literally — even inside
+   quotes it would end this comment too. CSS comments ignore quoting.) */
+/* @wr-variance-exempt --wr-display-xl marketing headlines carry further than terminal type; product routes on this domain must not inherit this */
+/* @wr-variance-exempt --wr-display-lg same as display-xl */
 
 [data-wr-app="waverider-marketing"] {
   --wr-display-xl: 64px;
