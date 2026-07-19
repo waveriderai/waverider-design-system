@@ -1,0 +1,77 @@
+/* =============================================================================
+   L2 SKIN — WaveFinder TW  ::  Taiwan locale variant
+
+   TW is NOT a separate design system. It is the same system + i18n. This file
+   holds only what genuinely differs for the Taiwan market.
+
+   Variance budget spend:
+     accent    — none (inherits family cyan)
+     density   — compact (same as US)
+     signature — limit-up / limit-down flash (漲停/跌停), a market mechanic
+                 that has no US equivalent
+
+   ---------------------------------------------------------------------------
+   ⚠ OPEN QUESTION — DIRECTIONAL COLOR POLARITY. NEEDS A DECISION.
+
+   In Taiwan (and CN/JP/KR) markets, RED means UP and GREEN means DOWN — the
+   inverse of the Western convention. The current TW app maps bull -> green and
+   bear -> red, i.e. it uses the US convention in a market where that reads
+   backwards to a local trader.
+
+   This may be deliberate (your users may be bilingual/US-market oriented) or
+   it may be inherited by accident from the US token port. I have NOT changed
+   it — flipping directional color silently would be the single most dangerous
+   edit possible in a trading UI.
+
+   To adopt local convention, uncomment the INVERTED block below. The token
+   names are already direction-based (up/down, not green/red) precisely so that
+   this is a value swap and touches zero components.
+   ---------------------------------------------------------------------------
+   ========================================================================== */
+
+[data-wr-app="wavefinder-tw"] {
+  /* CJK-aware stacks. Latin faces lead; CJK falls through to Noto/PingFang. */
+  --wr-font-display: var(--font-outfit), "Noto Sans TC", system-ui, sans-serif;
+  --wr-font-body: var(--font-jakarta), "Noto Sans TC", system-ui, sans-serif;
+  --wr-font-mono: var(--font-jetbrains), "PingFang TC", "Fira Code", monospace;
+
+  /* TW-only market semantics. Additive — these do not replace up/down. */
+  --wr-tw-foreign: var(--wr-chart-4);   /* 外資 */
+  --wr-tw-trust: var(--wr-chart-3);     /* 投信 */
+  --wr-tw-dealer: var(--wr-chart-2);    /* 自營商 */
+
+  /* Signature: limit up/down. Distinct from an ordinary tick flash because
+     hitting the limit is a categorically different event, not a bigger move. */
+  --wr-signature-limit-duration: 900ms;
+}
+
+/* --- INVERTED (local Taiwan convention) — currently OFF. ---------------------
+[data-wr-app="wavefinder-tw"] {
+  --wr-up-strong: #ef4444;
+  --wr-up-mid:    #f87171;
+  --wr-up-weak:   #fca5a5;
+  --wr-down-weak:   #86efac;
+  --wr-down-mid:    #4ade80;
+  --wr-down-strong: #22c55e;
+}
+[data-wr-app="wavefinder-tw"] .wr-delta[data-dir="up"]::before   { content: "▲"; }
+[data-wr-app="wavefinder-tw"] .wr-delta[data-dir="down"]::before { content: "▼"; }
+--------------------------------------------------------------------------- */
+
+@keyframes wr-limit-up {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: color-mix(in srgb, var(--wr-up-strong) 45%, transparent); }
+}
+
+@keyframes wr-limit-down {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: color-mix(in srgb, var(--wr-down-strong) 45%, transparent); }
+}
+
+[data-wr-app="wavefinder-tw"] .wr-limit-up {
+  animation: wr-limit-up var(--wr-signature-limit-duration) ease-out;
+}
+
+[data-wr-app="wavefinder-tw"] .wr-limit-down {
+  animation: wr-limit-down var(--wr-signature-limit-duration) ease-out;
+}

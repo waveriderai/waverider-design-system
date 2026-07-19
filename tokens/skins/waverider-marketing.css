@@ -1,0 +1,58 @@
+/* =============================================================================
+   L2 SKIN — WaveRider.ai  ::  marketing site
+
+   The only surface in the family that defaults to LIGHT polarity. Marketing
+   pages need to breathe; product UI needs to pack. Both are the same system.
+
+   Variance budget spend:
+     accent    — none (umbrella brand carries the anchor cyan)
+     density   — comfortable
+     signature — the terminal-glow hero band: the one place the product's dark
+                 aesthetic is quoted inside a light page
+
+   NOTE: marketing may use the frontend-design skill for exploratory layout,
+   but any embedded PRODUCT UI (screenshots, live demos, the app shell) renders
+   under the product tokens unchanged. A product screenshot on the marketing
+   site must look identical to the product.
+
+   /* @wr-variance-exempt --wr-display-xl marketing headlines carry further than terminal type; product routes on this domain must not inherit this */
+   /* @wr-variance-exempt --wr-display-lg same as display-xl */
+   ========================================================================== */
+
+[data-wr-app="waverider-marketing"] {
+  --wr-display-xl: 64px;
+  --wr-display-lg: 48px;
+
+  --wr-signature-hero-band: var(--wr-gradient-void);
+}
+
+/* Signature: a dark terminal band inside the light page. Quotes the product's
+   aesthetic so the site and the app read as one thing.
+
+   The band re-asserts dark by carrying data-wr-polarity="dark" on the element
+   itself — the polarity mechanism already does this correctly, so there is
+   nothing to override here. Markup:
+
+     <section class="wr-signature-terminal-band" data-wr-polarity="dark">
+
+   Doing it any other way (hand-copying the dark surface values into this file)
+   would duplicate the contract and drift the moment core.css changes. */
+[data-wr-app="waverider-marketing"] .wr-signature-terminal-band {
+  background: var(--wr-signature-hero-band);
+  color: var(--wr-text-primary);
+  position: relative;
+  isolation: isolate;
+}
+
+[data-wr-app="waverider-marketing"] .wr-signature-terminal-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 0%,
+    color-mix(in srgb, var(--wr-accent) 15%, transparent) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+  z-index: -1;
+}

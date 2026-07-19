@@ -1,0 +1,27 @@
+/* =============================================================================
+   WaveRider Design System — entry point
+
+   Import order matters. Core defines the contract; skins override within the
+   variance budget; the vision skin is a user preference and must win last.
+
+     @import "@waverider/design-system/tokens.css";
+
+   Then set the app context on <html>:
+     <html
+       data-wr-app="wavefinder"
+       data-wr-polarity="dark"
+       data-wr-density="compact"
+     >
+
+   Vision preference, when the user has opted in:
+     data-wr-vision="deuteranopia"
+   ========================================================================== */
+
+@import "./core.css";
+
+@import "./skins/wavefinder.css";
+@import "./skins/wavefinder-tw.css";
+@import "./skins/waverider-marketing.css";
+
+/* Last: user accessibility preference outranks every app skin. */
+@import "./skins/a11y-deuteranopia.css";

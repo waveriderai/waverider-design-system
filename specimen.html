@@ -1,0 +1,163 @@
+<title>WaveRider Design System — Quantum Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
+:root { --font-outfit:'Outfit'; --font-jakarta:'Plus Jakarta Sans'; --font-jetbrains:'JetBrains Mono'; }
+</style>
+<link rel="stylesheet" href="tokens/core.css">
+<link rel="stylesheet" href="tokens/skins/wavefinder.css">
+<link rel="stylesheet" href="tokens/skins/a11y-deuteranopia.css">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: var(--wr-space-6);
+    background: var(--wr-surface-base);
+    color: var(--wr-text-primary);
+    font-family: var(--wr-font-body);
+    transition: background var(--wr-dur-base) var(--wr-ease), color var(--wr-dur-base) var(--wr-ease);
+  }
+  h1 { font-family: var(--wr-font-display); font-size: var(--wr-display-lg);
+       letter-spacing: var(--wr-display-lg-ls); margin: 0 0 var(--wr-space-1); }
+  .sub { color: var(--wr-text-secondary); margin: 0 0 var(--wr-space-6); font-size: 14px; }
+  h2 { font-family: var(--wr-font-display); font-size: var(--wr-display-sm);
+       margin: var(--wr-space-7) 0 var(--wr-space-1); }
+  .note { color: var(--wr-text-muted); font-size: 12px; margin: 0 0 var(--wr-space-4); max-width: 62ch; line-height: 1.5; }
+
+  .controls { display: flex; gap: var(--wr-space-2); flex-wrap: wrap;
+    padding: var(--wr-space-3); background: var(--wr-surface-raised);
+    border: 1px solid var(--wr-border-default); border-radius: var(--wr-radius-lg); }
+  .controls button {
+    font-family: var(--wr-font-body); font-size: 12px; font-weight: 600;
+    height: var(--wr-control-h); padding: 0 var(--wr-space-3);
+    background: var(--wr-surface-elevated); color: var(--wr-text-secondary);
+    border: 1px solid var(--wr-border-default); border-radius: var(--wr-radius-md);
+    cursor: pointer; transition: all var(--wr-dur-fast) var(--wr-ease);
+  }
+  .controls button[aria-pressed="true"] {
+    background: var(--wr-accent); color: var(--wr-accent-contrast);
+    border-color: var(--wr-accent); box-shadow: var(--wr-glow-accent);
+  }
+  .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+         color: var(--wr-text-muted); align-self: center; margin-right: var(--wr-space-1); }
+
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: var(--wr-space-2); }
+  .sw { border: 1px solid var(--wr-border-default); border-radius: var(--wr-radius-lg); overflow: hidden; }
+  .sw .chip { height: 52px; }
+  .sw .meta { padding: var(--wr-space-2); background: var(--wr-surface-raised); }
+  .sw .name { font-size: 11px; font-weight: 600; }
+  .sw .tok { font-family: var(--wr-font-mono); font-size: 10px; color: var(--wr-text-muted); }
+
+  table { width: 100%; border-collapse: collapse; font-size: var(--wr-table-font-size);
+          background: var(--wr-surface-raised); border: 1px solid var(--wr-border-default);
+          border-radius: var(--wr-radius-lg); overflow: hidden; }
+  th { text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+       color: var(--wr-text-muted); font-weight: 600;
+       padding: var(--wr-cell-py) var(--wr-cell-px);
+       border-bottom: 1px solid var(--wr-border-default); background: var(--wr-surface-elevated); }
+  td { padding: var(--wr-cell-py) var(--wr-cell-px); height: var(--wr-row-h);
+       border-bottom: 1px solid var(--wr-border-subtle); }
+  tbody tr:hover { background: var(--wr-surface-overlay); }
+  .num { font-family: var(--wr-font-mono); font-variant-numeric: tabular-nums; text-align: right; }
+  .sym { font-family: var(--wr-font-mono); font-weight: 700; }
+
+  .bars { display: flex; gap: 2px; align-items: flex-end; height: 28px; }
+  .bars i { width: 12px; border-radius: 2px 2px 0 0; display: block; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: var(--wr-space-3); }
+  .card { background: var(--wr-surface-raised); border: 1px solid var(--wr-border-default);
+          border-radius: var(--wr-radius-xl); padding: var(--wr-space-4); }
+  .card .k { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--wr-text-muted); }
+  .card .v { font-family: var(--wr-font-mono); font-variant-numeric: tabular-nums;
+             font-size: var(--wr-data-xl); font-weight: 700; margin-top: var(--wr-space-1); }
+</style>
+
+<h1>Quantum Terminal</h1>
+<p class="sub">WaveRider family design system — L0 foundation + L1 semantic contract. Every value below is a <code>var(--wr-*)</code> reference.</p>
+
+<div class="controls">
+  <span class="lbl">Polarity</span>
+  <button data-set="polarity" data-val="dark" aria-pressed="true">Dark</button>
+  <button data-set="polarity" data-val="light" aria-pressed="false">Light</button>
+  <span class="lbl" style="margin-left:12px">Density</span>
+  <button data-set="density" data-val="compact" aria-pressed="true">Compact</button>
+  <button data-set="density" data-val="standard" aria-pressed="false">Standard</button>
+  <button data-set="density" data-val="comfortable" aria-pressed="false">Comfortable</button>
+  <span class="lbl" style="margin-left:12px">Vision</span>
+  <button data-set="vision" data-val="" aria-pressed="true">Default</button>
+  <button data-set="vision" data-val="deuteranopia" aria-pressed="false">Colorblind-safe</button>
+</div>
+
+<h2>Surface ramp</h2>
+<p class="note">Five steps. +1 = floats one notch above its parent. Never skip a step — the hierarchy collapses and the UI reads as noise.</p>
+<div class="swatches">
+  <div class="sw"><div class="chip" style="background:var(--wr-surface-void)"></div><div class="meta"><div class="name">Void</div><div class="tok">--wr-surface-void</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-surface-base)"></div><div class="meta"><div class="name">Base</div><div class="tok">--wr-surface-base</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-surface-raised)"></div><div class="meta"><div class="name">Raised</div><div class="tok">--wr-surface-raised</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-surface-elevated)"></div><div class="meta"><div class="name">Elevated</div><div class="tok">--wr-surface-elevated</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-surface-overlay)"></div><div class="meta"><div class="name">Overlay</div><div class="tok">--wr-surface-overlay</div></div></div>
+</div>
+
+<h2>Directional semantics</h2>
+<p class="note">Named up/down, never green/red — so a colorblind-safe or locale-inverted skin is a value swap that touches zero components. Toggle "Colorblind-safe" above and watch these change while the ▲▼ glyphs stay.</p>
+<div class="swatches">
+  <div class="sw"><div class="chip" style="background:var(--wr-up-strong)"></div><div class="meta"><div class="name">▲ Up strong</div><div class="tok">--wr-up-strong</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-up-mid)"></div><div class="meta"><div class="name">▲ Up mid</div><div class="tok">--wr-up-mid</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-up-weak)"></div><div class="meta"><div class="name">▲ Up weak</div><div class="tok">--wr-up-weak</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-flat)"></div><div class="meta"><div class="name">– Flat</div><div class="tok">--wr-flat</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-down-weak)"></div><div class="meta"><div class="name">▼ Down weak</div><div class="tok">--wr-down-weak</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-down-mid)"></div><div class="meta"><div class="name">▼ Down mid</div><div class="tok">--wr-down-mid</div></div></div>
+  <div class="sw"><div class="chip" style="background:var(--wr-down-strong)"></div><div class="meta"><div class="name">▼ Down strong</div><div class="tok">--wr-down-strong</div></div></div>
+</div>
+
+<h2>Chart series</h2>
+<p class="note">New in this contract — previously missing entirely, which meant every app invented its own series colors. Deliberately excludes pure green and red so series never collide with directional meaning.</p>
+<div class="bars" style="height:60px">
+  <i style="background:var(--wr-chart-1);height:60px;width:36px"></i>
+  <i style="background:var(--wr-chart-2);height:48px;width:36px"></i>
+  <i style="background:var(--wr-chart-3);height:54px;width:36px"></i>
+  <i style="background:var(--wr-chart-4);height:34px;width:36px"></i>
+  <i style="background:var(--wr-chart-5);height:44px;width:36px"></i>
+  <i style="background:var(--wr-chart-6);height:28px;width:36px"></i>
+  <i style="background:var(--wr-chart-7);height:38px;width:36px"></i>
+  <i style="background:var(--wr-chart-8);height:22px;width:36px"></i>
+</div>
+
+<h2>Scanner table — the density stress test</h2>
+<p class="note">The densest surface in the family. Toggle density above: row height, cell padding and type size all move together from one attribute. Numerals are tabular, so columns hold still on tick.</p>
+<table>
+  <thead><tr><th>Symbol</th><th>Setup</th><th class="num">Last</th><th class="num">Chg%</th><th class="num">RS</th><th class="num">Vol×</th></tr></thead>
+  <tbody>
+    <tr><td class="sym">NVDA</td><td>VCP breakout</td><td class="num">1,204.55</td><td class="num"><span class="wr-delta" data-dir="up">6.42%</span></td><td class="num">98</td><td class="num">3.1</td></tr>
+    <tr><td class="sym">AVGO</td><td>Continuation</td><td class="num">238.10</td><td class="num"><span class="wr-delta" data-dir="up">2.85%</span></td><td class="num">94</td><td class="num">1.9</td></tr>
+    <tr><td class="sym">MSFT</td><td>52w high</td><td class="num">512.77</td><td class="num"><span class="wr-delta" data-dir="up">0.91%</span></td><td class="num">88</td><td class="num">1.2</td></tr>
+    <tr><td class="sym">TSLA</td><td>Base failure</td><td class="num">176.30</td><td class="num"><span class="wr-delta" data-dir="down">1.44%</span></td><td class="num">41</td><td class="num">2.4</td></tr>
+    <tr><td class="sym">PLTR</td><td>Undercut</td><td class="num">62.08</td><td class="num"><span class="wr-delta" data-dir="down">7.13%</span></td><td class="num">29</td><td class="num">4.7</td></tr>
+    <tr><td class="sym">KO</td><td>—</td><td class="num">71.44</td><td class="num"><span class="wr-delta" data-dir="flat">0.02%</span></td><td class="num">55</td><td class="num">0.8</td></tr>
+  </tbody>
+</table>
+
+<h2>Focal numerals</h2>
+<p class="note">The 10-second rule: one screen, one biggest-brightest element. These are the answer to "what is this page's single question?"</p>
+<div class="cards">
+  <div class="card"><div class="k">Breadth</div><div class="v" style="color:var(--wr-up-strong)">+412</div></div>
+  <div class="card"><div class="k">New highs</div><div class="v">187</div></div>
+  <div class="card"><div class="k">Setups firing</div><div class="v" style="color:var(--wr-accent-text)">23</div></div>
+  <div class="card"><div class="k">Distribution days</div><div class="v" style="color:var(--wr-down-strong)">4</div></div>
+</div>
+
+<script>
+  const root = document.documentElement;
+  root.setAttribute('data-wr-app', 'wavefinder');
+  root.setAttribute('data-wr-polarity', 'dark');
+  root.setAttribute('data-wr-density', 'compact');
+
+  document.querySelectorAll('.controls button').forEach(b => {
+    b.addEventListener('click', () => {
+      const group = b.dataset.set, val = b.dataset.val;
+      document.querySelectorAll(`.controls button[data-set="${group}"]`)
+        .forEach(o => o.setAttribute('aria-pressed', String(o === b)));
+      if (val) root.setAttribute(`data-wr-${group}`, val);
+      else root.removeAttribute(`data-wr-${group}`);
+    });
+  });
+</script>

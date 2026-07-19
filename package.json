@@ -1,0 +1,28 @@
+{
+  "name": "@waverider/design-system",
+  "version": "0.1.0",
+  "description": "WaveRider family design system — Quantum Terminal. Layered tokens, one contract, per-app skins under a variance budget.",
+  "license": "UNLICENSED",
+  "private": true,
+  "files": [
+    "tokens",
+    "tailwind-preset.js",
+    "DESIGN.md",
+    "VARIANCE-BUDGET.md"
+  ],
+  "main": "tailwind-preset.js",
+  "exports": {
+    ".": "./tailwind-preset.js",
+    "./tailwind-preset": "./tailwind-preset.js",
+    "./tokens.css": "./tokens/index.css",
+    "./tokens/core.css": "./tokens/core.css",
+    "./tokens/compat.css": "./tokens/compat.css",
+    "./skins/*": "./tokens/skins/*"
+  },
+  "scripts": {
+    "audit": "scripts/design-audit.sh",
+    "check:variance": "scripts/check-variance.sh",
+    "check": "scripts/check-variance.sh && echo 'variance ok'"
+  },
+  "keywords": ["design-system", "design-tokens", "waverider", "tailwind"]
+}

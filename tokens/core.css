@@ -1,0 +1,399 @@
+/* =============================================================================
+   WaveRider Design System — L0 Foundation + L1 Semantic Contract
+   "Quantum Terminal"
+
+   THIS FILE IS THE SINGLE SOURCE OF TRUTH FOR THE WAVERIDER APP FAMILY.
+
+   Layers (see VARIANCE-BUDGET.md):
+     L0  Foundation  — invariant DNA. Changing anything here moves the WHOLE
+                       family. Type scale, spacing rhythm, radius, motion,
+                       grayscale, elevation.
+     L1  Semantic    — role tokens. Fixed NAMES, remappable VALUES. Apps and
+                       components consume ONLY these. Never raw hex.
+     L2  App skin    — see tokens/skins/*.css. Apps may override ONLY:
+                       accent, density, and one signature. Nothing else.
+
+   Rules for consumers:
+     - Components reference var(--wr-*). Never a literal hex, never a raw
+       Tailwind palette color (text-gray-400, bg-slate-800, text-green-500).
+     - Polarity (dark/light) is a DATA ATTRIBUTE, not a separate token set:
+       <html data-wr-polarity="dark">. Dark is the default.
+     - Density is a DATA ATTRIBUTE: <html data-wr-density="compact">.
+   ========================================================================== */
+
+/* -----------------------------------------------------------------------------
+   L0 — FOUNDATION (invariant across every app in the family)
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* --- Type families -------------------------------------------------------
+     Display: Outfit          — headings, hero numbers. Has personality.
+     Body:    Plus Jakarta    — prose, labels, UI copy. High legibility.
+     Mono:    JetBrains Mono  — ALL trading numerals. Non-negotiable.
+     CJK fallbacks are part of the contract, not a TW-local hack. */
+  --wr-font-display: var(--font-outfit), "Noto Sans TC", system-ui, sans-serif;
+  --wr-font-body: var(--font-jakarta), "Noto Sans TC", system-ui, sans-serif;
+  --wr-font-mono: var(--font-jetbrains), "PingFang TC", "Fira Code", monospace;
+
+  /* --- Type scale ----------------------------------------------------------
+     Display = narrative. Data = numerals. They are different scales on
+     purpose: data runs tighter line-height to survive dense tables. */
+  --wr-display-xl: 48px;   --wr-display-xl-lh: 1.1;   --wr-display-xl-ls: -0.02em;
+  --wr-display-lg: 36px;   --wr-display-lg-lh: 1.15;  --wr-display-lg-ls: -0.02em;
+  --wr-display-md: 28px;   --wr-display-md-lh: 1.2;   --wr-display-md-ls: -0.01em;
+  --wr-display-sm: 22px;   --wr-display-sm-lh: 1.3;   --wr-display-sm-ls: 0;
+
+  --wr-data-xl: 24px;      --wr-data-xl-lh: 1.2;
+  --wr-data-lg: 18px;      --wr-data-lg-lh: 1.3;
+  --wr-data-md: 14px;      --wr-data-md-lh: 1.4;
+  --wr-data-sm: 12px;      --wr-data-sm-lh: 1.4;
+
+  /* Tabular numerals. Without this, prices jitter horizontally on every tick
+     and the eye cannot track a column. Applied by the .wr-num utility and by
+     every mono data cell. This is a correctness rule, not a preference. */
+  --wr-numeric: tabular-nums;
+
+  /* --- Spacing rhythm — 8px base, 4px half-step ---------------------------- */
+  --wr-space-0: 0px;
+  --wr-space-1: 4px;
+  --wr-space-2: 8px;
+  --wr-space-3: 12px;
+  --wr-space-4: 16px;
+  --wr-space-5: 24px;
+  --wr-space-6: 32px;
+  --wr-space-7: 48px;
+  --wr-space-8: 64px;
+
+  /* --- Radius --------------------------------------------------------------
+     Terminal feel needs sharper corners than SaaS. Functional elements stay
+     <=8px; containers <=12px. 16px+ exists for modals/sheets only. */
+  --wr-radius-sm: 4px;
+  --wr-radius-md: 6px;
+  --wr-radius-lg: 8px;
+  --wr-radius-xl: 12px;
+  --wr-radius-2xl: 16px;
+  --wr-radius-full: 9999px;
+
+  /* --- Layout constants ---------------------------------------------------- */
+  --wr-sidebar-w: 256px;
+  --wr-sidebar-collapsed-w: 64px;
+  --wr-topbar-h: 56px;
+
+  /* --- Motion --------------------------------------------------------------
+     150-300ms. Longer reads as "slow" and traders will not forgive it.
+     Motion is only ever feedback ("this datum just changed") or state
+     transition. Never decoration. */
+  --wr-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --wr-ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --wr-dur-fast: 150ms;
+  --wr-dur-base: 300ms;
+  --wr-dur-slow: 500ms;
+  --wr-dur-ambient: 2000ms;
+
+  /* --- Focus & hit targets -------------------------------------------------
+     Trading terminals are keyboard-driven. Focus must be unmistakable.
+     Dense surfaces may go to 24px; anything touch-reachable stays 44px. */
+  --wr-focus-ring-w: 2px;
+  --wr-focus-ring-offset: 2px;
+  --wr-hit-target-dense: 24px;
+  --wr-hit-target-min: 44px;
+}
+
+/* -----------------------------------------------------------------------------
+   L1 — SEMANTIC CONTRACT :: DARK POLARITY (the family default)
+   -------------------------------------------------------------------------- */
+
+:root,
+[data-wr-polarity="dark"] {
+  color-scheme: dark;
+
+  /* --- Surfaces: a 5-step elevation ramp -----------------------------------
+     +1 step = "this element floats one notch above its parent."
+     Never skip a step (void straight to elevated) — the hierarchy collapses
+     and the UI reads as noise. */
+  --wr-surface-void: #05080d;      /* page backdrop, modal scrim */
+  --wr-surface-base: #0a0f1a;      /* app background */
+  --wr-surface-raised: #111827;    /* card, panel, sidebar */
+  --wr-surface-elevated: #1f2937;  /* dropdown, tooltip, active state */
+  --wr-surface-overlay: #374151;   /* hover highlight, selected row */
+
+  /* --- Text ---------------------------------------------------------------- */
+  --wr-text-primary: #f1f5f9;      /* content and numerals */
+  --wr-text-secondary: #94a3b8;    /* labels, supporting copy */
+  --wr-text-muted: #64748b;        /* placeholder, disabled, helper */
+  --wr-text-inverse: #0f172a;      /* text on an accent fill */
+
+  /* --- Borders ------------------------------------------------------------- */
+  --wr-border-subtle: rgba(148, 163, 184, 0.1);
+  --wr-border-default: rgba(148, 163, 184, 0.2);
+  --wr-border-strong: rgba(148, 163, 184, 0.3);
+
+  /* --- Accent — THE per-app variance knob (see L2 skins) -------------------
+     Default is WaveRider cyan: "technical precision". Used for calls to
+     action and focus. Never decorative.
+     --wr-accent-text is a separate token because a saturated accent that
+     passes contrast as a FILL often fails as TEXT. Skins must set both. */
+  --wr-accent: #06b6d4;
+  --wr-accent-hover: #22d3ee;
+  --wr-accent-muted: #0891b2;
+  --wr-accent-text: #22d3ee;
+  --wr-accent-contrast: #05080d;   /* readable ON --wr-accent */
+  --wr-border-focus: rgba(6, 182, 212, 0.5);
+
+  /* --- Market data: directional semantics ----------------------------------
+     Named up/down, NOT green/red — so a colorblind-safe or culturally
+     inverted skin (TW/CN: red = up) remaps VALUES without renaming anything.
+     HARD RULE: color is never the only channel. Every directional value
+     ships a redundant sign glyph (see .wr-delta). ~8% of men cannot
+     distinguish these hues, and this audience skews heavily male. */
+  --wr-up-strong: #22c55e;    /* >= 5% */
+  --wr-up-mid: #4ade80;       /* 2-5% */
+  --wr-up-weak: #86efac;      /* < 2% */
+  --wr-flat: #94a3b8;
+  --wr-down-weak: #fca5a5;
+  --wr-down-mid: #f87171;
+  --wr-down-strong: #ef4444;
+
+  /* --- Volume -------------------------------------------------------------- */
+  --wr-volume-high: #3b82f6;
+  --wr-volume-surge: #8b5cf6;
+
+  /* --- Status -------------------------------------------------------------- */
+  --wr-success: #22c55e;
+  --wr-warning: #f59e0b;
+  --wr-danger: #ef4444;
+  --wr-info: #06b6d4;
+
+  /* --- Tier / merchandising ------------------------------------------------ */
+  --wr-tier-rider: #f59e0b;
+  --wr-tier-pro: #10b981;
+  --wr-tier-advanced: #8b5cf6;
+
+  /* --- Charts --------------------------------------------------------------
+     A categorical series palette the family shares. Previously MISSING, which
+     meant every app invented its own series colors — the fastest route to a
+     family that doesn't look related.
+     Chosen to be distinguishable under deuteranopia AND to avoid colliding
+     with up/down semantics: no pure green or red in the series ramp. */
+  --wr-chart-1: #22d3ee;
+  --wr-chart-2: #a78bfa;
+  --wr-chart-3: #fbbf24;
+  --wr-chart-4: #60a5fa;
+  --wr-chart-5: #f472b6;
+  --wr-chart-6: #2dd4bf;
+  --wr-chart-7: #fb923c;
+  --wr-chart-8: #94a3b8;
+
+  --wr-chart-grid: rgba(148, 163, 184, 0.12);
+  --wr-chart-axis: #64748b;
+  --wr-chart-crosshair: rgba(6, 182, 212, 0.6);
+  --wr-chart-band: rgba(148, 163, 184, 0.06);
+
+  /* --- Elevation ----------------------------------------------------------
+     WaveRider does not use light-source drop shadows. Shadow means GLOW, and
+     glow means "something is happening here". Static elements get none. */
+  --wr-glow-accent: 0 0 20px rgba(6, 182, 212, 0.4), 0 0 40px rgba(6, 182, 212, 0.2);
+  --wr-glow-up: 0 0 10px rgba(34, 197, 94, 0.3);
+  --wr-glow-down: 0 0 10px rgba(239, 68, 68, 0.3);
+  --wr-shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --wr-shadow-card: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+  /* --- Gradients — purposeful only. Never a purple hero gradient. ---------- */
+  --wr-gradient-void: radial-gradient(ellipse at top, #0a0f1a 0%, #05080d 100%);
+  --wr-gradient-glow: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
+  --wr-gradient-surface: linear-gradient(180deg, rgba(31, 41, 55, 0.5) 0%, rgba(17, 24, 39, 0.8) 100%);
+  --wr-gradient-cta: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  --wr-gradient-rider: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --wr-gradient-pro: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+/* -----------------------------------------------------------------------------
+   L1 — SEMANTIC CONTRACT :: LIGHT POLARITY
+   Required by the marketing site and any light surface in the family.
+   Values are re-derived for contrast on light, NOT naively inverted:
+   saturated dark-mode hues fail WCAG against white.
+   -------------------------------------------------------------------------- */
+
+[data-wr-polarity="light"] {
+  color-scheme: light;
+
+  /* The ramp must stay MONOTONIC in light too. Collapsing raised and elevated
+     to the same white is the classic light-mode mistake: a dropdown opening
+     over a card then shows no elevation change at all. Raised sits a hair off
+     white so elevated has somewhere to go. */
+  --wr-surface-void: #dde3ec;
+  --wr-surface-base: #eef1f6;
+  --wr-surface-raised: #f8fafc;
+  --wr-surface-elevated: #ffffff;
+  --wr-surface-overlay: #e7ecf3;
+
+  --wr-text-primary: #0b1220;
+  --wr-text-secondary: #475569;
+  --wr-text-muted: #64748b;
+  --wr-text-inverse: #f8fafc;
+
+  --wr-border-subtle: rgba(15, 23, 42, 0.08);
+  --wr-border-default: rgba(15, 23, 42, 0.14);
+  --wr-border-strong: rgba(15, 23, 42, 0.24);
+
+  /* Cyan #06B6D4 as TEXT on white is ~2.3:1 — fails badly. Darkened for text
+     while the fill stays on-brand. */
+  --wr-accent: #0891b2;
+  --wr-accent-hover: #06b6d4;
+  --wr-accent-muted: #67e8f9;
+  --wr-accent-text: #0e7490;
+  --wr-accent-contrast: #ffffff;
+  --wr-border-focus: rgba(8, 145, 178, 0.55);
+
+  /* Directional values darkened so they pass contrast on white. The bright
+     dark-mode greens (#86EFAC) are invisible on a light surface. */
+  --wr-up-strong: #15803d;
+  --wr-up-mid: #16a34a;
+  --wr-up-weak: #4ade80;
+  --wr-flat: #64748b;
+  --wr-down-weak: #f87171;
+  --wr-down-mid: #dc2626;
+  --wr-down-strong: #b91c1c;
+
+  --wr-volume-high: #2563eb;
+  --wr-volume-surge: #7c3aed;
+
+  --wr-success: #15803d;
+  --wr-warning: #b45309;
+  --wr-danger: #b91c1c;
+  --wr-info: #0e7490;
+
+  --wr-tier-rider: #b45309;
+  --wr-tier-pro: #047857;
+  --wr-tier-advanced: #6d28d9;
+
+  --wr-chart-1: #0891b2;
+  --wr-chart-2: #7c3aed;
+  --wr-chart-3: #b45309;
+  --wr-chart-4: #2563eb;
+  --wr-chart-5: #be185d;
+  --wr-chart-6: #0d9488;
+  --wr-chart-7: #c2410c;
+  --wr-chart-8: #64748b;
+
+  --wr-chart-grid: rgba(15, 23, 42, 0.1);
+  --wr-chart-axis: #64748b;
+  --wr-chart-crosshair: rgba(8, 145, 178, 0.6);
+  --wr-chart-band: rgba(15, 23, 42, 0.04);
+
+  /* On light surfaces, elevation reverts to conventional shadow — glow is
+     invisible on white. This is the one place the family's "glow not shadow"
+     rule yields to physics. */
+  --wr-glow-accent: 0 0 0 1px rgba(8, 145, 178, 0.4), 0 4px 16px rgba(8, 145, 178, 0.15);
+  --wr-glow-up: 0 0 0 1px rgba(21, 128, 61, 0.3);
+  --wr-glow-down: 0 0 0 1px rgba(185, 28, 28, 0.3);
+  --wr-shadow-elevated: 0 8px 32px rgba(15, 23, 42, 0.12);
+  --wr-shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+
+  --wr-gradient-void: radial-gradient(ellipse at top, #eef1f6 0%, #dde3ec 100%);
+  --wr-gradient-glow: radial-gradient(circle at 50% 0%, rgba(8, 145, 178, 0.1) 0%, transparent 50%);
+  --wr-gradient-surface: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  --wr-gradient-cta: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+  --wr-gradient-rider: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  --wr-gradient-pro: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+/* -----------------------------------------------------------------------------
+   L1 — DENSITY
+   A first-class token, because the variance budget lets apps differ on it.
+   WaveFinder's scanner and WaveLogger's journal are the same design system at
+   different densities — NOT two design systems.
+   -------------------------------------------------------------------------- */
+
+:root,
+[data-wr-density="standard"] {
+  --wr-row-h: 36px;
+  --wr-cell-px: var(--wr-space-3);
+  --wr-cell-py: var(--wr-space-2);
+  --wr-control-h: 32px;
+  --wr-stack-gap: var(--wr-space-3);
+  --wr-section-gap: var(--wr-space-5);
+  --wr-table-font-size: var(--wr-data-md);
+}
+
+/* Scanner-grade. Maximum signal per screen. WaveFinder, AIChart, Trade Ideas. */
+[data-wr-density="compact"] {
+  --wr-row-h: 28px;
+  --wr-cell-px: var(--wr-space-2);
+  --wr-cell-py: var(--wr-space-1);
+  --wr-control-h: 28px;
+  --wr-stack-gap: var(--wr-space-2);
+  --wr-section-gap: var(--wr-space-4);
+  --wr-table-font-size: var(--wr-data-sm);
+}
+
+/* Reading and input surfaces. WaveLogger journal, marketing, settings. */
+[data-wr-density="comfortable"] {
+  --wr-row-h: 44px;
+  --wr-cell-px: var(--wr-space-4);
+  --wr-cell-py: var(--wr-space-3);
+  --wr-control-h: 40px;
+  --wr-stack-gap: var(--wr-space-4);
+  --wr-section-gap: var(--wr-space-6);
+  --wr-table-font-size: var(--wr-data-md);
+}
+
+/* -----------------------------------------------------------------------------
+   CONTRACT UTILITIES
+   Small set. These encode rules that are too easy to get wrong by hand.
+   -------------------------------------------------------------------------- */
+
+/* Every trading numeral. Enforces mono + tabular figures together so columns
+   align and digits stop jittering on tick. */
+.wr-num {
+  font-family: var(--wr-font-mono);
+  font-variant-numeric: var(--wr-numeric);
+  font-feature-settings: "tnum" 1;
+}
+
+/* The redundant channel that makes directional color accessible.
+   Renders a sign glyph via ::before so the meaning survives without hue.
+   Usage: <span class="wr-delta" data-dir="up">2.4%</span> */
+.wr-delta::before {
+  content: "";
+  margin-right: 0.15em;
+  font-family: var(--wr-font-mono);
+}
+.wr-delta[data-dir="up"]::before { content: "▲"; }
+.wr-delta[data-dir="down"]::before { content: "▼"; }
+.wr-delta[data-dir="flat"]::before { content: "–"; }
+.wr-delta[data-dir="up"] { color: var(--wr-up-strong); }
+.wr-delta[data-dir="down"] { color: var(--wr-down-strong); }
+.wr-delta[data-dir="flat"] { color: var(--wr-flat); }
+
+/* Unmistakable keyboard focus. Terminals are driven by keyboard. */
+.wr-focusable:focus-visible,
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--wr-focus-ring-w) solid var(--wr-border-focus);
+  outline-offset: var(--wr-focus-ring-offset);
+  border-radius: var(--wr-radius-sm);
+}
+
+/* -----------------------------------------------------------------------------
+   REDUCED MOTION
+   A trading UI flashes on every tick. For a motion-sensitive user that is not
+   a nice-to-have to suppress — it is unusable. Directional MEANING is
+   preserved (the color and glyph stay); only the animation stops.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --wr-dur-fast: 1ms;
+    --wr-dur-base: 1ms;
+    --wr-dur-slow: 1ms;
+    --wr-dur-ambient: 1ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

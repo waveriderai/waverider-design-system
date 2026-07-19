@@ -1,0 +1,43 @@
+/* =============================================================================
+   L2 SKIN — WaveFinder (US)  ::  app.waverider.ai
+
+   WaveFinder is the ANCHOR app: it carries the family's default accent
+   unchanged. Its identity comes from density and its signature, not from a
+   different color.
+
+   Variance budget spend:
+     accent    — none (inherits family cyan)
+     density   — compact (highest-density surface in the family)
+     signature — the scan-line sweep on the scanning engine
+   ========================================================================== */
+
+[data-wr-app="wavefinder"] {
+  /* accent: inherited. Do not override. */
+
+  /* Signature: the scan sweep. This is WaveFinder's one allowed flourish —
+     it exists because "the engine is working" is genuinely useful state, not
+     because it looks good. */
+  --wr-signature-scan-duration: 8s;
+  --wr-signature-scan-color: color-mix(in srgb, var(--wr-accent) 55%, transparent);
+}
+
+[data-wr-app="wavefinder"] .wr-signature-scan {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-wr-app="wavefinder"] .wr-signature-scan::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--wr-signature-scan-color) 50%,
+    transparent 100%
+  );
+  animation: wr-scan-line var(--wr-signature-scan-duration) linear infinite;
+  pointer-events: none;
+}

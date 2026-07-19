@@ -1,0 +1,69 @@
+/* =============================================================================
+   ACCESSIBILITY SKIN — colorblind-safe directional palette
+
+   Roughly 8% of men have red-green color vision deficiency. A trading audience
+   skews heavily male, so for this product family that is not an edge case —
+   it is a meaningful slice of paying users who currently cannot read the most
+   important signal on the screen.
+
+   This is a USER PREFERENCE, not an app skin. Any app may enable it:
+     <html data-wr-vision="deuteranopia">
+
+   Approach follows the established convention (TradingView, Bloomberg
+   colorblind modes): replace the green/red axis with blue/amber, which is
+   distinguishable under all three common CVD types AND under monochrome.
+
+   This works as a pure value swap because the core contract names directions
+   (up/down), never colors (green/red). No component changes.
+
+   Note that the redundant ▲/▼ glyph from .wr-delta is ALWAYS on, for every
+   user, in every skin. This palette reduces reliance on that fallback; it is
+   not a substitute for it.
+   ========================================================================== */
+
+[data-wr-vision="deuteranopia"],
+[data-wr-vision="protanopia"] {
+  --wr-up-strong: #2563eb;
+  --wr-up-mid: #60a5fa;
+  --wr-up-weak: #bfdbfe;
+  --wr-flat: #94a3b8;
+  --wr-down-weak: #fde68a;
+  --wr-down-mid: #f59e0b;
+  --wr-down-strong: #d97706;
+
+  --wr-success: #2563eb;
+  --wr-danger: #d97706;
+
+  --wr-glow-up: 0 0 10px rgba(37, 99, 235, 0.35);
+  --wr-glow-down: 0 0 10px rgba(217, 119, 6, 0.35);
+
+  /* Volume colors must move too — blue now means "up", so the old blue
+     volume signal would collide with directional meaning. */
+  --wr-volume-high: #a78bfa;
+  --wr-volume-surge: #7c3aed;
+
+  /* Chart series 4 (blue) collides with the new up color; shift it. */
+  --wr-chart-4: #94a3b8;
+}
+
+[data-wr-polarity="light"][data-wr-vision="deuteranopia"],
+[data-wr-polarity="light"][data-wr-vision="protanopia"] {
+  --wr-up-strong: #1d4ed8;
+  --wr-up-mid: #2563eb;
+  --wr-up-weak: #60a5fa;
+  --wr-down-weak: #f59e0b;
+  --wr-down-mid: #d97706;
+  --wr-down-strong: #b45309;
+}
+
+/* Tritanopia (blue-yellow, rare) needs the opposite treatment: the blue/amber
+   axis is exactly what fails. Fall back to the default green/red, which
+   tritanopes distinguish normally. */
+[data-wr-vision="tritanopia"] {
+  --wr-up-strong: #22c55e;
+  --wr-up-mid: #4ade80;
+  --wr-up-weak: #86efac;
+  --wr-down-weak: #fca5a5;
+  --wr-down-mid: #f87171;
+  --wr-down-strong: #ef4444;
+}
